@@ -26,7 +26,7 @@ namespace Test.WebApl.Controllers
 
         [HttpGet]
         // GET: api/Values
-        public HttpResponseMessage findProductById(int id)
+        public HttpResponseMessage FindProductById(int id)
         {
             var foundProduct = products.Find(product => product.ProductId == id);
             if (foundProduct != null) return Request.CreateResponse(HttpStatusCode.OK, foundProduct);
@@ -46,7 +46,7 @@ namespace Test.WebApl.Controllers
 
         [HttpPost]
         // POST: api/Values
-        public HttpResponseMessage saveProduct([FromBody] Product newProduct)
+        public HttpResponseMessage SaveProduct([FromBody] Product newProduct)
         {
 
             if (!products.Exists(product=> product.ProductId==newProduct.ProductId))
@@ -61,9 +61,9 @@ namespace Test.WebApl.Controllers
             
         [HttpPut]
         // PUT: api/Values/5
-        public HttpResponseMessage changePrice([FromUri]int id, [FromUri]double value)
+        public HttpResponseMessage ChangePrice([FromUri]int id, [FromUri]double value)
         {
-            var foundProduct = products.Find(Product => Product.ProductId == id);
+            var foundProduct = products.Find(product => product.ProductId == id);
             foundProduct.ProductPrice = value;
             if (foundProduct != null)
             {
@@ -75,7 +75,7 @@ namespace Test.WebApl.Controllers
 
         [HttpDelete]
         // DELETE: api/Values/5
-        public HttpResponseMessage removeProduct([FromUri]int id)
+        public HttpResponseMessage RemoveProduct([FromUri]int id)
         {   
             int numberOfProducts = products.Count;
             products.Remove(products.Find(product => product.ProductId == id));
