@@ -1,0 +1,36 @@
+SELECT dbo."Customer"."FirstName", dbo."Customer"."LastName", dbo."Adress"."Adress",dbo."Adress"."PostNumber" WHERE dbo."Customer"."Id" = dbo."Adress"."Id";
+
+
+SELECT * FROM dbo."Customer" ORDER BY dbo."Customer"."Age" DESC; 
+
+
+SELECT dbo."Customer"."FirstName",AVG(dbo."Customer"."Age") FROM dbo."Customer" GROUP BY dbo."Customer"."FirstName";
+
+
+SELECT COUNT(dbo."Customer"."FirstName"), dbo."Customer"."LastName" FROM dbo."Customer" GROUP BY dbo."Customer"."LastName" HAVING COUNT(dbo."Customer"."FirstName")>1;
+
+
+
+INSERT INTO dbo."Customer" (dbo."Customer"."Id",dbo."Customer"."FirstName",dbo."Customer"."LastName") VALUES ("","","") 
+
+
+
+INSERT INTO dbo."CustomerProduct" ("CustomerId","AdressId") VALUES ('0E7067F0-6D20-43C8-BB21-299BC6B053A6','36441C18-0524-4F4D-BF4B-5FE931768E59');
+
+
+INSERT INTO dbo."Adress" ("Adress","PostNumber") VALUES ('Adresa3','123');
+ 
+UPDATE dbo."Customer" SET AdressId = '5EACB0E4-2846-4FFB-9FF0-F5ABDC14D6F9' WHERE dbo."Customer"."FirstName"='Luka'
+
+
+
+
+SELECT dbo."Customer"."LastName",dbo.Customer."FirstName",dbo."Adress"."Adress",dbo."Adress"."PostNumber" FROM dbo."Customer" INNER JOIN dbo."Adress" ON "Customer"."AdressId"="Adress"."Id"
+
+SELECT dbo."Customer"."LastName",dbo.Customer."FirstName",dbo."Adress"."Adress",dbo."Adress"."PostNumber" FROM dbo."Customer" FULL OUTER JOIN dbo."Adress" ON "Customer"."AdressId"="Adress"."Id"
+
+SELECT dbo."Customer"."LastName",dbo.Customer."FirstName",dbo."Adress"."Adress",dbo."Adress"."PostNumber" FROM dbo."Customer" RIGHT JOIN dbo."Adress" ON "Customer"."AdressId"="Adress"."Id"
+
+SELECT dbo."Customer"."LastName",dbo.Customer."FirstName",dbo."Adress"."Adress",dbo."Adress"."PostNumber" FROM dbo."Customer" LEFT JOIN dbo."Adress" ON "Customer"."AdressId"="Adress"."Id"
+
+

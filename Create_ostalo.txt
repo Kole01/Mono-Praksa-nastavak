@@ -1,0 +1,80 @@
+
+
+--1-N (Adress - Customer)
+
+CREATE TABLE Adress
+(
+Id UNIQUEIDENTIFIER PRIMARY KEY default NEWID(),
+Adress varchar(20),
+PostNumber int,
+);
+
+
+-- M-N (Customer - Product)
+
+CREATE TABLE Product
+(
+Id UNIQUEIDENTIFIER PRIMARY KEY default NEWID(),
+ProductName varchar(20),
+ProductPrice float
+);
+
+CREATE TABLE Customer
+(
+Id UNIQUEIDENTIFIER PRIMARY KEY default NEWID(),
+FirstName varchar(20),
+LastName varchar(20),
+AdressId UNIQUEIDENTIFIER,
+CONSTRAINT FK_AdressId FOREIGN KEY (AdressId) REFERENCES Adress (Id)
+);
+
+CREATE TABLE CustomerProduct
+(
+Id UNIQUEIDENTIFIER PRIMARY KEY default NEWID(),
+CustomerId UNIQUEIDENTIFIER,
+CONSTRAINT FK_CustomerId FOREIGN KEY (CustomerId) REFERENCES Customer (Id),
+ProductId UNIQUEIDENTIFIER, 
+CONSTRAINT FK_ProductId FOREIGN KEY (ProductId) REFERENCES Product(Id)
+);
+
+-- 1-1 (Capital City - Country)
+
+CREATE TABLE CapitalCity(
+Id UNIQUEIDENTIFIER PRIMARY KEY default NEWID(),
+CityName varchar(20),
+PostNumber int,
+
+);
+
+CREATE TABLE Country(
+Id UNIQUEIDENTIFIER PRIMARY KEY default NEWID(),
+CountryName varchar(20),
+CONSTRAINT FK_ContryId FOREIGN KEY (Id) REFERENCES CapitalCity(Id)
+);
+
+
+ALTER TABLE CapitalCity ADD CONSTRAINT FK_CapitalCityId FOREIGN KEY (Id) REFERENCES Country(Id);
+
+
+
+
+--------- Order By-----
+SELECT * FROM dbo."Customer" ORDER BY dbo."Customer"."Age" DESC; 
+
+
+---Group By -----
+SELECT dbo."Customer"."FirstName",AVG(dbo."Customer"."Age") FROM dbo."Customer" GROUP BY dbo."Customer"."FirstName";
+
+
+---Having-----
+SELECT COUNT(dbo."Customer"."FirstName"), dbo."Customer"."LastName" FROM dbo."Customer" GROUP BY dbo."Customer"."LastName" HAVING COUNT(dbo."Customer"."FirstName")>1;
+
+
+
+---OFFSET, LIMIT ----
+//SELECT * FROM dbo."Customer" OFFSET 5 LIMIT 5;
+
+
+
+SET ROWCOUNT 10
+SELECT * FROM dbo."Customer";

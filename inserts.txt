@@ -1,0 +1,24 @@
+INSERT INTO dbo."Customer" ("FirstName","LastName") VALUES ('Pero','Pero');
+INSERT INTO dbo."Customer" ("FirstName","LastName") VALUES ('Ivan','Ivan');
+INSERT INTO dbo."Customer" ("FirstName","LastName") VALUES ('Luka','Luka');
+
+
+
+INSERT INTO dbo."Customer" ("FirstName","LastName","age") VALUES ('Luka','Lukic','21');
+INSERT INTO dbo."Customer" ("FirstName","LastName","age") VALUES ('Luka','Sukic','22');
+INSERT INTO dbo."Customer" ("FirstName","LastName","age") VALUES ('Luka','Bukic','18');
+
+
+
+INSERT INTO dbo."Product" ("ProductName","ProductPrice") VALUES ('Jabuka','21');
+INSERT INTO dbo."Product" ("ProductName","ProductPrice") VALUES ('Kruska','10');
+INSERT INTO dbo."Product" ("ProductName","ProductPrice") VALUES ('Sljiva','1');
+INSERT INTO dbo."Product" ("ProductName","ProductPrice") VALUES ('Mandraina','5');
+
+
+INSERT INTO dbo."Customer" ("FirstName","LastName","age") VALUES ('Luka','Lukic','21');
+INSERT INTO dbo."Customer" ("FirstName","LastName","age") VALUES ('Luka','Sukic','22');
+INSERT INTO dbo."Customer" ("FirstName","LastName","age") VALUES ('Luka','Bukic','18');
+INSERT INTO dbo."Customer" ("FirstName","LastName","age") VALUES ('Luka','Lukic','21');
+INSERT INTO dbo."Customer" ("FirstName","LastName","age") VALUES ('Luka','Sukic','22');
+INSERT INTO dbo."Customer" ("FirstName","LastName","age") VALUES ('Luka','Bukic','18');

@@ -7,30 +7,39 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Test.WebApl.Models;
+using System.Data.SqlClient;
 
 namespace Test.WebApl.Controllers
-{
+{   
     public class ProductController : ApiController
     {
-        public static List<Product> products = new List<Product>
-        {
-            //new Product(1, "Jabuka", 10.5),
-            //new Product(2, "Kruska", 9),
-            //new Product(3, "Sljiva", 8),
-            new Product(4, "Banana", 7),
-            new Product(5, "Limun", 5),
-            new Product(6, "Mandarina", 2)
-        };
+        //public static List<Product> products = new List<Product>
+        //{
+        //    //new Product(1, "Jabuka", 10.5),
+        //    //new Product(2, "Kruska", 9),
+        //    //new Product(3, "Sljiva", 8),
+        //    new Product(4, "Banana", 7),
+        //    new Product(5, "Limun", 5),
+        //    new Product(6, "Mandarina", 2)
+        //};
 
-
+        SqlConnection conn = new SqlConnection("Data Source = st - 03\\SQLEXPRESS; Initial Catalog = Prak; Integrated Security = True");
+        
+        
 
         [HttpGet]
         // GET: api/Values
         public HttpResponseMessage FindProductById(int id)
         {
-            var foundProduct = products.Find(product => product.ProductId == id);
+            //var foundProduct = products.Find(product => product.ProductId == id);
+            //if (foundProduct != null) return Request.CreateResponse(HttpStatusCode.OK, foundProduct);
+            //else return Request.CreateResponse(HttpStatusCode.NotFound, "No such product!");
+
+            conn.Open();
+            SqlCommand cmd = conn.CreateCommand("INSER");
             if (foundProduct != null) return Request.CreateResponse(HttpStatusCode.OK, foundProduct);
             else return Request.CreateResponse(HttpStatusCode.NotFound, "No such product!");
+
         }
 
 
