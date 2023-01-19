@@ -52,8 +52,6 @@ namespace Test.WebApl.Controllers
         // GET: api/Values/5
         public HttpResponseMessage AllCustomers()
         {
-            string connectionString = "Data Source=st-03\\SQLEXPRESS;Initial Catalog=Prak;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(connectionString);
             List<Customer> customers = new List<Customer>();
             string queryString = "SELECT * FROM [Prak].[dbo].[Customer]";
             SqlCommand cmd = new SqlCommand(queryString, conn);
@@ -78,10 +76,8 @@ namespace Test.WebApl.Controllers
         [HttpPost]
         // POST: api/Values
         public HttpResponseMessage SaveCustomer([FromBody]Customer newCustomer)
-        {
-            string connectionString = "Data Source=st-03\\SQLEXPRESS;Initial Catalog=Prak;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(connectionString);
-            Guid id = Guid.NewGuid();
+        {   
+            newCustomer.CustomerId = Guid.NewGuid();
             string queryString = "INSERT INTO Customer (Id,FirstName,LastName, Age) VALUES (@id,@CustomerFirstName,@CustomerLastName,@CustomerAge)";
             SqlCommand cmd = new SqlCommand(queryString, conn);
             conn.Open();
@@ -105,7 +101,7 @@ namespace Test.WebApl.Controllers
 
         [HttpPut]
         // PUT: api/Values/5
-        public HttpResponseMessage ChangeAge([FromUri] Guid Id, [FromUri] string newAge)
+        public HttpResponseMessage ChangeAge([FromBody] Product newCustomerAge)
         {
             Customer foundCustomer = FindingCustomer(Id);
 
@@ -115,8 +111,8 @@ namespace Test.WebApl.Controllers
             }
             string queryString = "UPDATE [Prak].[dbo].[Customer] SET Age = @newAge WHERE Id=@Id";
             SqlCommand cmd = new SqlCommand(queryString, conn);
-            cmd.Parameters.AddWithValue("@Id", Id);
-            cmd.Parameters.AddWithValue("@newAge", newAge);
+            cmd.Parameters.AddWithValue("@Id", newCustomerAge.CustomerId);
+            cmd.Parameters.AddWithValue("@newAge", newCustomerAge.CustomerAge);
             SqlDataAdapter adapter = new SqlDataAdapter();
             conn.Open();
             adapter.UpdateCommand = cmd;
