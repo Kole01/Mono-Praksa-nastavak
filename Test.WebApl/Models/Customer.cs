@@ -8,9 +8,11 @@ namespace Test.WebApl.Models
 {
     public class Customer
     {
-        public int CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         public String CustomerFirstName { get; set; }
         public String CustomerLastName { get; set; }
+        public int CustomerAge { get; set; }
+
 
 
     }

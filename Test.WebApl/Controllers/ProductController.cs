@@ -8,37 +8,33 @@ using System.Net.Http;
 using System.Web.Http;
 using Test.WebApl.Models;
 using System.Data.SqlClient;
+using System.Web.ModelBinding;
+using System.Data;
+using Microsoft.Win32.SafeHandles;
 
 namespace Test.WebApl.Controllers
-{   
+{
     public class ProductController : ApiController
     {
-        //public static List<Product> products = new List<Product>
-        //{
-        //    //new Product(1, "Jabuka", 10.5),
-        //    //new Product(2, "Kruska", 9),
-        //    //new Product(3, "Sljiva", 8),
-        //    new Product(4, "Banana", 7),
-        //    new Product(5, "Limun", 5),
-        //    new Product(6, "Mandarina", 2)
-        //};
 
-        SqlConnection conn = new SqlConnection("Data Source = st - 03\\SQLEXPRESS; Initial Catalog = Prak; Integrated Security = True");
-        
-        
+        public static string connectionString = "Data Source=st-03\\SQLEXPRESS;Initial Catalog=Prak;Integrated Security=True";
+        SqlConnection conn = new SqlConnection(connectionString);
+
+
 
         [HttpGet]
         // GET: api/Values
-        public HttpResponseMessage FindProductById(int id)
+        public HttpResponseMessage FindProductById(Guid Id)
         {
-            //var foundProduct = products.Find(product => product.ProductId == id);
-            //if (foundProduct != null) return Request.CreateResponse(HttpStatusCode.OK, foundProduct);
-            //else return Request.CreateResponse(HttpStatusCode.NotFound, "No such product!");
+            SqlConnection conn = new SqlConnection(connectionString);
+            Product foundProduct = FindingProduct(Id);
 
-            conn.Open();
-            SqlCommand cmd = conn.CreateCommand("INSER");
-            if (foundProduct != null) return Request.CreateResponse(HttpStatusCode.OK, foundProduct);
-            else return Request.CreateResponse(HttpStatusCode.NotFound, "No such product!");
+            if (foundProduct != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, foundProduct);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.NotFound, "No such product!");
 
         }
 
@@ -47,49 +43,134 @@ namespace Test.WebApl.Controllers
         // GET: api/Values/5
         public HttpResponseMessage AllProducts()
         {
-            if (products!=null)
+            
+            List<Product> products = new List<Product>();
+            string queryString = "SELECT [Id],[ProductName],[ProductPrice] FROM [Prak].[dbo].[Product]";
+            SqlCommand cmd = new SqlCommand(queryString, conn);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Product tempProduct = new Product();
+                tempProduct.ProductName = reader.GetString(1);
+                tempProduct.ProductId = reader.GetGuid(0);
+                tempProduct.ProductPrice = reader.GetDouble(2);
+                products.Add(tempProduct);
+            }
+            conn.Close();
+            if (products != null)
                 return Request.CreateResponse(HttpStatusCode.OK, products);
-            else return Request.CreateResponse(HttpStatusCode.NotFound,"Empty!");
+
+            return Request.CreateResponse(HttpStatusCode.NotFound, "Empty!");
         }
 
 
-        [HttpPost]
-        // POST: api/Values
+         [HttpPost]
+// POST: api/Values
         public HttpResponseMessage SaveProduct([FromBody] Product newProduct)
         {
-
-            if (!products.Exists(product=> product.ProductId==newProduct.ProductId))
-            {
-                products.Add(newProduct);
-                return Request.CreateResponse(HttpStatusCode.OK, "Added!");
-            }
-            else return Request.CreateResponse(HttpStatusCode.BadRequest,"Porduct with the same id exists!");
+            
+            newProduct.ProductId = Guid.NewGuid();
+            string queryString = "INSERT INTO Product (Id,ProductName,ProductPrice) VALUES (@id,@productName,@productPrice)";
+            SqlCommand cmd = new SqlCommand(queryString, conn);
+            conn.Open();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cmd.Parameters.AddWithValue("@id", newProduct.ProductId);
+            cmd.Parameters.AddWithValue("@productName", newProduct.ProductName);
+            cmd.Parameters.AddWithValue("@productPrice", newProduct.ProductPrice);
+            adapter.InsertCommand = cmd;
+            adapter.InsertCommand.ExecuteNonQuery();
+            conn.Close();
+            return Request.CreateResponse(HttpStatusCode.OK);
+           
         }
 
 
-            
+
         [HttpPut]
         // PUT: api/Values/5
-        public HttpResponseMessage ChangePrice([FromUri]int id, [FromUri]double value)
+        public HttpResponseMessage ChangePrice([FromBody] Product NewProductPrice)
         {
-            var foundProduct = products.Find(product => product.ProductId == id);
-            foundProduct.ProductPrice = value;
-            if (foundProduct != null)
+            
+            Product foundProduct = FindingProduct(NewProductPrice.ProductId);
+            if(foundProduct==null)
             {
-                if (foundProduct.ProductPrice == value) return Request.CreateResponse(HttpStatusCode.OK, "Changed!");
-                else return Request.CreateResponse(HttpStatusCode.NotModified, "Error!");
+                return Request.CreateResponse(HttpStatusCode.NotFound, "No product for update");
             }
-            else return Request.CreateResponse(HttpStatusCode.NotFound, "Not found!");
+          
+            string queryString = "UPDATE [Prak].[dbo].[Product] SET ProductPrice = @value WHERE Id=@Id";
+            SqlCommand cmd = new SqlCommand(queryString, conn);
+            cmd.Parameters.AddWithValue("@Id", NewProductPrice.ProductId);
+            cmd.Parameters.AddWithValue("@value", NewProductPrice.ProductPrice);
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            conn.Open();
+            adapter.UpdateCommand= cmd;
+            if (!(adapter.UpdateCommand.ExecuteNonQuery() > 0))
+            {
+                conn.Close();
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Failed");
+            }
+
+            conn.Close();
+            return Request.CreateResponse(HttpStatusCode.OK, "Success");
+
+
         }
 
         [HttpDelete]
         // DELETE: api/Values/5
-        public HttpResponseMessage RemoveProduct([FromUri]int id)
-        {   
-            int numberOfProducts = products.Count;
-            products.Remove(products.Find(product => product.ProductId == id));
-            if (products.Count== numberOfProducts-1) return Request.CreateResponse(HttpStatusCode.OK,"Deleted!");
-            else return Request.CreateResponse(HttpStatusCode.NotModified,"Error!"); ;
+        public HttpResponseMessage RemoveProduct([FromUri] Guid Id)
+        {
+            Product foundProduct = FindingProduct(Id);
+
+            if (foundProduct == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, "No Product found");
+            }
+           
+            string queryString = "DELETE [Prak].[dbo].[Product] WHERE Id=@Id";
+            SqlCommand cmd = new SqlCommand(queryString, conn);
+            cmd.Parameters.AddWithValue("@Id", Id);
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            conn.Open();
+            adapter.DeleteCommand = cmd;
+            if (!(adapter.DeleteCommand.ExecuteNonQuery()> 0))
+            {
+                conn.Close();
+                return Request.CreateResponse(HttpStatusCode.OK, "Failed");
+            }
+            conn.Close();
+            return Request.CreateResponse(HttpStatusCode.OK, "Success");
         }
+
+        public Product FindingProduct(Guid Id)
+        {
+            Product foundProduct = new Product();
+            string queryString = "SELECT [Id],[ProductName],[ProductPrice] FROM [Prak].[dbo].[Product] WHERE [Id]= @id";
+            SqlCommand cmd = new SqlCommand(queryString, conn);
+            cmd.Parameters.AddWithValue("@id", Id);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    foundProduct.ProductName = reader.GetString(1);
+                    foundProduct.ProductId = reader.GetGuid(0);
+                    foundProduct.ProductPrice = reader.GetDouble(2);
+
+                }
+                conn.Close();
+            }
+
+            if (foundProduct == null)
+            {
+                return null;
+            }
+            return foundProduct;
+        }
+
     }
 }
+    
+
