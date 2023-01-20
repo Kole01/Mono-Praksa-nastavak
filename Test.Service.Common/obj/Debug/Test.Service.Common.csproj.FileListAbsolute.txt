@@ -1,0 +1,11 @@
+C:\Users\student\source\repos\Test\Test.Service.Common\bin\Debug\Test.Service.Common.dll
+C:\Users\student\source\repos\Test\Test.Service.Common\bin\Debug\Test.Service.Common.pdb
+C:\Users\student\source\repos\Test\Test.Service.Common\bin\Debug\Test.Model.Common.dll
+C:\Users\student\source\repos\Test\Test.Service.Common\bin\Debug\Test.Model.dll
+C:\Users\student\source\repos\Test\Test.Service.Common\bin\Debug\Test.Model.Common.pdb
+C:\Users\student\source\repos\Test\Test.Service.Common\bin\Debug\Test.Model.pdb
+C:\Users\student\source\repos\Test\Test.Service.Common\obj\Debug\Test.Service.Common.csproj.AssemblyReference.cache
+C:\Users\student\source\repos\Test\Test.Service.Common\obj\Debug\Test.Service.Common.csproj.CoreCompileInputs.cache
+C:\Users\student\source\repos\Test\Test.Service.Common\obj\Debug\Test.Service.Common.csproj.CopyComplete
+C:\Users\student\source\repos\Test\Test.Service.Common\obj\Debug\Test.Service.Common.dll
+C:\Users\student\source\repos\Test\Test.Service.Common\obj\Debug\Test.Service.Common.pdb

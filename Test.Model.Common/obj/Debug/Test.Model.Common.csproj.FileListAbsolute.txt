@@ -1,0 +1,6 @@
+C:\Users\student\source\repos\Test\Test.Model.Common\bin\Debug\Test.Model.Common.dll
+C:\Users\student\source\repos\Test\Test.Model.Common\bin\Debug\Test.Model.Common.pdb
+C:\Users\student\source\repos\Test\Test.Model.Common\obj\Debug\Test.Model.Common.csproj.AssemblyReference.cache
+C:\Users\student\source\repos\Test\Test.Model.Common\obj\Debug\Test.Model.Common.csproj.CoreCompileInputs.cache
+C:\Users\student\source\repos\Test\Test.Model.Common\obj\Debug\Test.Model.Common.dll
+C:\Users\student\source\repos\Test\Test.Model.Common\obj\Debug\Test.Model.Common.pdb

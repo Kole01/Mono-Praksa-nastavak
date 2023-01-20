@@ -1,0 +1,13 @@
+C:\Users\student\source\repos\Test\Test.Repository\obj\Debug\Test.Repository.csproj.AssemblyReference.cache
+C:\Users\student\source\repos\Test\Test.Repository\obj\Debug\Test.Repository.csproj.CoreCompileInputs.cache
+C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\Test.Repository.dll
+C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\Test.Repository.pdb
+C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\Test.Model.dll
+C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\Test.Repository.Common.dll
+C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\Test.Model.Common.dll
+C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\Test.Model.pdb
+C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\Test.Repository.Common.pdb
+C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\Test.Model.Common.pdb
+C:\Users\student\source\repos\Test\Test.Repository\obj\Debug\Test.Repository.csproj.CopyComplete
+C:\Users\student\source\repos\Test\Test.Repository\obj\Debug\Test.Repository.dll
+C:\Users\student\source\repos\Test\Test.Repository\obj\Debug\Test.Repository.pdb

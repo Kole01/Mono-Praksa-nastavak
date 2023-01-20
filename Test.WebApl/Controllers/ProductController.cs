@@ -6,11 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Test.WebApl.Models;
 using System.Data.SqlClient;
 using System.Web.ModelBinding;
 using System.Data;
 using Microsoft.Win32.SafeHandles;
+using Test.Model;
 
 namespace Test.WebApl.Controllers
 {

@@ -65,3 +65,17 @@ C:\Users\student\source\repos\Test\Test.WebApl\obj\Debug\Test.WebApl.csproj.Core
 C:\Users\student\source\repos\Test\Test.WebApl\obj\Debug\Test.WebApl.csproj.CopyComplete
 C:\Users\student\source\repos\Test\Test.WebApl\obj\Debug\Test.WebApl.dll
 C:\Users\student\source\repos\Test\Test.WebApl\obj\Debug\Test.WebApl.pdb
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Model.Common.dll
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Model.dll
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Service.Common.dll
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Service.dll
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Repository.Common.dll
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Model.Common.pdb
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Model.pdb
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Service.Common.pdb
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Service.pdb
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Repository.Common.pdb
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Common.dll
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Common.pdb
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Repository.dll
+C:\Users\student\source\repos\Test\Test.WebApl\bin\Test.Repository.pdb
