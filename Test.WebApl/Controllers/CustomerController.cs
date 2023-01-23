@@ -5,12 +5,15 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.WebSockets;
 using Test.Model;
+using Test.Model.Common;
 using Test.Repository;
 using Test.Service;
 using Test.Service.Common;
+using Test.WebApl.Models;
 namespace Test.WebApl.Controllers
 {
     public class CustomerController : ApiController
@@ -19,11 +22,13 @@ namespace Test.WebApl.Controllers
 
         CustomerService service = new CustomerService();
 
+
+
         [HttpGet]
         // GET: api/Values
-        public HttpResponseMessage FindCustomerById(Guid id)
+        public async Task<HttpResponseMessage> FindCustomerByIdAsync(Guid id)
         {
-            Customer foundCustomer = service.FindCustomerById(id);
+            Customer foundCustomer = await service.FindCustomerByIdAsync(id);
             if (foundCustomer != null)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, foundCustomer);
@@ -33,11 +38,13 @@ namespace Test.WebApl.Controllers
         }
 
 
+
+
         [HttpGet]
         // GET: api/Values/5
-        public HttpResponseMessage AllCustomers()
+        public async Task<HttpResponseMessage> AllCustomersAsync()
         {
-            List<Customer> customers = service.AllCustomers();
+            List<Customer> customers = await service.AllCustomersAsync();
             List<CustomerRest> listRestCustomers = new List<CustomerRest>();
             foreach (Customer customer in customers)
             {
@@ -59,12 +66,18 @@ namespace Test.WebApl.Controllers
         }
 
 
+
+
         [HttpPost]
         // POST: api/Values
-        public HttpResponseMessage SaveCustomer([FromBody]CustomerRest customerToSave)
+        public async Task<HttpResponseMessage> SaveCustomerAsync([FromBody]CustomerRest customerToSave)
         {
+            if (ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Greska");
+            }
             Customer newCustomer = new Customer(Guid.NewGuid(),customerToSave.CustomerFirstName, customerToSave.CustomerLastName, customerToSave.CustomerAge);
-            if (service.SaveCustomer(newCustomer))
+            if (await service.SaveCustomerAsync(newCustomer))
             {
                 return Request.CreateResponse(HttpStatusCode.OK,customerToSave);
             }
@@ -77,10 +90,23 @@ namespace Test.WebApl.Controllers
 
         [HttpPut]
         // PUT: api/Values/5
-        public HttpResponseMessage ChangeAge([FromBody] CustomerRest updateCustomerRest)
+        public async Task<HttpResponseMessage> UpdateCustomerAsync([FromBody] UpdateCustomerRest updateCustomer)
         {
-     
-            switch (service.ChangeAge(updateCustomer))
+            if(String.IsNullOrEmpty(updateCustomer.CustomerId.ToString()))
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Greska");
+            }
+
+
+            Customer alterCustomer = new Customer()
+            {
+                CustomerId = updateCustomer.CustomerId,
+                CustomerFirstName = updateCustomer.CustomerFirstName,
+                CustomerLastName = updateCustomer.CustomerLastName,
+                CustomerAge = updateCustomer.CustomerAge
+            };
+
+            switch (await service.ChangeAgeAsync(alterCustomer))
             {
                 case 1:
                     return Request.CreateResponse(HttpStatusCode.NotFound, "Customer not found");
@@ -92,7 +118,7 @@ namespace Test.WebApl.Controllers
                     return Request.CreateResponse(HttpStatusCode.OK, "Success");
 
                 default:
-                    return null;
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Failed");
             }
             
             
@@ -100,10 +126,10 @@ namespace Test.WebApl.Controllers
 
         [HttpDelete]
         // DELETE: api/Values/5
-        public HttpResponseMessage RemoveCustomer([FromUri] Guid Id)
+        public async Task<HttpResponseMessage> RemoveCustomerAsync([FromUri] Guid Id)
         {
 
-            switch (service.RemoveCustomer(Id))
+            switch (await service.RemoveCustomerAsync(Id))
             {
                 case 1:
                     return Request.CreateResponse(HttpStatusCode.NotFound, "Customer not found");
@@ -115,7 +141,7 @@ namespace Test.WebApl.Controllers
                     return Request.CreateResponse(HttpStatusCode.OK, "Success");
 
                 default:
-                    return null;
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Failed");
             }
         }
                        

@@ -16,20 +16,20 @@ namespace Test.Repository
     {
 
         public static string connectionString = "Data Source=st-03\\SQLEXPRESS;Initial Catalog=Prak;Integrated Security=True";
-        SqlConnection conn = new SqlConnection(connectionString);
+        
 
-        public Customer FindCustomerById(Guid id)
+        public async Task<Customer> FindCustomerByIdAsync(Guid id)
         {
-
+            SqlConnection conn = new SqlConnection(connectionString);
             Customer foundCustomer = new Customer();
             string queryString = "SELECT [Id],[FirstName],[lastName],[Age] FROM [Prak].[dbo].[Customer] WHERE [Id]= @id";
             SqlCommand cmd = new SqlCommand(queryString, conn);
             cmd.Parameters.AddWithValue("@id", id);
-            conn.Open();
+            await conn.OpenAsync();
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     foundCustomer.CustomerId = reader.GetGuid(0);
                     foundCustomer.CustomerFirstName = reader.GetString(1);
@@ -39,6 +39,7 @@ namespace Test.Repository
                 }
                 conn.Close();
             }
+            
             if (foundCustomer == null)
             {
                 return null;
@@ -47,14 +48,15 @@ namespace Test.Repository
 
         }
 
-        public List<Customer> AllCustomers()
+        public async Task<List<Customer>> AllCustomersAsync()
         {
+            SqlConnection conn = new SqlConnection(connectionString);
             List<Customer> customers = new List<Customer>();
             string queryString = "SELECT * FROM [Prak].[dbo].[Customer]";
             SqlCommand cmd = new SqlCommand(queryString, conn);
-            conn.Open();
+            await conn.OpenAsync();
             SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
+            while (await reader.ReadAsync())
             {
                 Customer tempCustomer = new Customer();
                 tempCustomer.CustomerId = reader.GetGuid(0);
@@ -71,12 +73,13 @@ namespace Test.Repository
             return null;
         }
 
-        public bool SaveCustomer(Customer newCustomer)
+        public async Task<bool> SaveCustomerAsync(Customer newCustomer)
         {
+            SqlConnection conn = new SqlConnection(connectionString);
             newCustomer.CustomerId = Guid.NewGuid();
             string queryString = "INSERT INTO Customer (Id,FirstName,LastName, Age) VALUES (@id,@CustomerFirstName,@CustomerLastName,@CustomerAge)";
             SqlCommand cmd = new SqlCommand(queryString, conn);
-            conn.Open();
+            await conn.OpenAsync();
             SqlDataAdapter adapter = new SqlDataAdapter();
 
             cmd.Parameters.AddWithValue("@id", newCustomer.CustomerId);
@@ -84,7 +87,7 @@ namespace Test.Repository
             cmd.Parameters.AddWithValue("@CustomerLastName", newCustomer.CustomerLastName);
             cmd.Parameters.AddWithValue("@CustomerAge", newCustomer.CustomerAge);
             adapter.InsertCommand = cmd;
-            if (!(adapter.InsertCommand.ExecuteNonQuery() > 0))
+            if (!(await adapter.InsertCommand.ExecuteNonQueryAsync() > 0))
             {
                 conn.Close();
                 return false;
@@ -93,9 +96,10 @@ namespace Test.Repository
         }
 
 
-        public int RemoveCustomer( Guid Id)
+        public async Task<int> RemoveCustomerAsync( Guid Id)
         {
-            Customer foundCustomer = FindCustomerById(Id);
+            SqlConnection conn = new SqlConnection(connectionString);
+            Customer foundCustomer = await FindCustomerByIdAsync(Id);
 
             if (foundCustomer == null)
             {
@@ -105,9 +109,9 @@ namespace Test.Repository
             SqlCommand cmd = new SqlCommand(queryString, conn);
             cmd.Parameters.AddWithValue("@Id", Id);
             SqlDataAdapter adapter = new SqlDataAdapter();
-            conn.Open();
+            await conn.OpenAsync();
             adapter.DeleteCommand = cmd;
-            if (!(adapter.DeleteCommand.ExecuteNonQuery() > 0))
+            if (!(await adapter.DeleteCommand.ExecuteNonQueryAsync() > 0))
             {
                 conn.Close();
                 return 2;
@@ -117,28 +121,53 @@ namespace Test.Repository
         }
 
 
-        public int ChangeAge( Customer newCustomerAge)
+        public async Task<int> UpdateCustomerAsync( Customer updateCustomer)
         {
-            Customer foundCustomer = FindCustomerById(newCustomerAge.CustomerId);
-
+            SqlConnection conn = new SqlConnection(connectionString);
+            Customer foundCustomer = await FindCustomerByIdAsync(updateCustomer.CustomerId);
+            
             if (foundCustomer == null)
             {
                 return 1;
             }
-            string queryString = "UPDATE [Prak].[dbo].[Customer] SET Age = @newAge WHERE Id=@Id";
-            SqlCommand cmd = new SqlCommand(queryString, conn);
-            cmd.Parameters.AddWithValue("@Id", newCustomerAge.CustomerId);
-            cmd.Parameters.AddWithValue("@newAge", newCustomerAge.CustomerAge);
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            conn.Open();
-            adapter.UpdateCommand = cmd;
-            if (!(adapter.UpdateCommand.ExecuteNonQuery() > 0))
+            
+            if (String.IsNullOrEmpty(updateCustomer.CustomerFirstName))
             {
-                conn.Close();
-                return 2;
+                updateCustomer.CustomerFirstName = foundCustomer.CustomerFirstName;
             }
-            conn.Close();
-            return 3;
+            if (String.IsNullOrEmpty(updateCustomer.CustomerLastName))
+            {
+                updateCustomer.CustomerLastName = foundCustomer.CustomerLastName;
+            }
+            if (updateCustomer.CustomerAge== 0)
+            {
+                updateCustomer.CustomerAge = foundCustomer.CustomerAge;
+            }
+
+            string queryString = "UPDATE [Prak].[dbo].[Customer] SET Age = @newAge, FirstName = @NewFirstName, LastName = @newLastName WHERE Id=@Id";
+            SqlCommand cmd = new SqlCommand(queryString, conn);
+            cmd.Parameters.AddWithValue("@Id", updateCustomer.CustomerId);
+            cmd.Parameters.AddWithValue("@newFirstName", updateCustomer.CustomerFirstName);
+            cmd.Parameters.AddWithValue("@newLastName", updateCustomer.CustomerLastName);
+            cmd.Parameters.AddWithValue("@newAge", updateCustomer.CustomerAge);
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            try
+            {
+                await conn.OpenAsync();
+                adapter.UpdateCommand = cmd;
+                if (!(await adapter.UpdateCommand.ExecuteNonQueryAsync() > 0))
+                {
+                    conn.Close();
+                    return 2;
+                }
+                conn.Close();
+                return 3;
+            }catch (SqlException ex)
+            {
+
+                return 4;
+            }
+            
         }
 
 

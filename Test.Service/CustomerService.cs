@@ -16,9 +16,11 @@ namespace Test.Service
     public class CustomerService : ICustomerService
     {
         public CustomerRepository repository = new CustomerRepository(); 
-        public Customer FindCustomerById(Guid id)
+
+
+        public async Task<Customer> FindCustomerByIdAsync(Guid id)
         {
-            Customer foundCustomer = repository.FindCustomerById(id);
+            Customer foundCustomer =await repository.FindCustomerByIdAsync(id);
             if (foundCustomer != null)
             {
                 return foundCustomer;
@@ -26,9 +28,9 @@ namespace Test.Service
             return null;
         }
 
-        public List<Customer> AllCustomers()
+        public async Task<List<Customer>> AllCustomersAsync()
         {
-            List<Customer> customers = repository.AllCustomers();
+            List<Customer> customers =await repository.AllCustomersAsync();
             if (customers != null)
             {
                 return customers;
@@ -37,18 +39,18 @@ namespace Test.Service
         }
 
 
-        public bool SaveCustomer(Customer newCustomer)
+        public async Task<bool> SaveCustomerAsync(Customer newCustomer)
         {
-            if (repository.SaveCustomer(newCustomer))
+            if (await repository.SaveCustomerAsync(newCustomer))
             {
                 return true;
             }
             return false;
         }
 
-        public int RemoveCustomer(Guid Id)
+        public async Task<int> RemoveCustomerAsync(Guid Id)
         {
-            switch (repository.RemoveCustomer(Id))
+            switch (await repository.RemoveCustomerAsync(Id))
             {
                 case 1:
                     return 1;
@@ -63,9 +65,9 @@ namespace Test.Service
                     return 4;
             }
         }
-        public int ChangeAge(Customer newCustomerAge)
+        public async Task<int> UpdateCustomerAsync(Customer newCustomerAge)
         {
-            switch (repository.ChangeAge(newCustomerAge))
+            switch (await repository.UpdateCustomerAsync(newCustomerAge))
             {
                 case 1:
                     return 1;

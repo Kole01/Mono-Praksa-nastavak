@@ -18,8 +18,7 @@ namespace Test.WebApl.Controllers
     {
 
         public static string connectionString = "Data Source=st-03\\SQLEXPRESS;Initial Catalog=Prak;Integrated Security=True";
-        SqlConnection conn = new SqlConnection(connectionString);
-
+        
 
 
         [HttpGet]
@@ -43,7 +42,7 @@ namespace Test.WebApl.Controllers
         // GET: api/Values/5
         public HttpResponseMessage AllProducts()
         {
-            
+            SqlConnection conn = new SqlConnection(connectionString);
             List<Product> products = new List<Product>();
             string queryString = "SELECT [Id],[ProductName],[ProductPrice] FROM [Prak].[dbo].[Product]";
             SqlCommand cmd = new SqlCommand(queryString, conn);
@@ -69,7 +68,7 @@ namespace Test.WebApl.Controllers
 // POST: api/Values
         public HttpResponseMessage SaveProduct([FromBody] Product newProduct)
         {
-            
+            SqlConnection conn = new SqlConnection(connectionString);
             newProduct.ProductId = Guid.NewGuid();
             string queryString = "INSERT INTO Product (Id,ProductName,ProductPrice) VALUES (@id,@productName,@productPrice)";
             SqlCommand cmd = new SqlCommand(queryString, conn);
@@ -91,7 +90,7 @@ namespace Test.WebApl.Controllers
         // PUT: api/Values/5
         public HttpResponseMessage ChangePrice([FromBody] Product NewProductPrice)
         {
-            
+            SqlConnection conn = new SqlConnection(connectionString);
             Product foundProduct = FindingProduct(NewProductPrice.ProductId);
             if(foundProduct==null)
             {
@@ -121,6 +120,7 @@ namespace Test.WebApl.Controllers
         // DELETE: api/Values/5
         public HttpResponseMessage RemoveProduct([FromUri] Guid Id)
         {
+            SqlConnection conn = new SqlConnection(connectionString);
             Product foundProduct = FindingProduct(Id);
 
             if (foundProduct == null)
@@ -145,6 +145,7 @@ namespace Test.WebApl.Controllers
 
         public Product FindingProduct(Guid Id)
         {
+            SqlConnection conn = new SqlConnection(connectionString);
             Product foundProduct = new Product();
             string queryString = "SELECT [Id],[ProductName],[ProductPrice] FROM [Prak].[dbo].[Product] WHERE [Id]= @id";
             SqlCommand cmd = new SqlCommand(queryString, conn);

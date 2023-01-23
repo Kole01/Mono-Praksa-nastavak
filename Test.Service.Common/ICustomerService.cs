@@ -10,10 +10,10 @@ namespace Test.Service.Common
 {
     public interface ICustomerService
     {
-        List<Customer> AllCustomers();
-        Customer FindCustomerById(Guid id);
-        bool SaveCustomer(Customer newCustomer);
-        int ChangeAge(Customer newCustomerAge);
-        int RemoveCustomer(Guid id);
+        Task<List<Customer>> AllCustomersAsync();
+        Task<Customer> FindCustomerByIdAsync(Guid id);
+        Task<bool> SaveCustomerAsync(Customer newCustomer);
+        Task<int> UpdateCustomerAsync(Customer newCustomerAge);
+        Task<int> RemoveCustomerAsync(Guid id);
     }
 }

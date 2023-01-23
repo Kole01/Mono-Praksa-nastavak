@@ -9,10 +9,10 @@ namespace Test.Repository.Common
 {
     public interface ICustomerRepository
     {
-        List<Customer> AllCustomers();
-        Customer FindCustomerById(Guid id);
-        bool SaveCustomer(Customer newCustomer);
-        int RemoveCustomer(Guid id);
-        int ChangeAge(Customer newCustomerAge);
+        Task<List<Customer>> AllCustomersAsync();
+        Task<Customer> FindCustomerByIdAsync(Guid id);
+        Task<bool> SaveCustomerAsync(Customer newCustomer);
+        Task<int> RemoveCustomerAsync(Guid id);
+        Task<int> UpdateCustomerAsync(Customer newCustomerAge);
     }
 }
