@@ -11,6 +11,7 @@ using System.Web.WebSockets;
 using Test.Model;
 using Test.Model.Common;
 using Test.Repository;
+using Test.Repository.Common;
 using Test.Service;
 using Test.Service.Common;
 using Test.WebApl.Models;
@@ -19,10 +20,15 @@ namespace Test.WebApl.Controllers
     public class CustomerController : ApiController
     {
 
+        public CustomerController() { }
+        //CustomerService service = new CustomerService();
 
-        CustomerService service = new CustomerService();
+        private ICustomerService service { get; set; }
 
-
+        public CustomerController(ICustomerService _service)
+        {
+            service = _service;
+        }
 
         [HttpGet]
         // GET: api/Values
@@ -72,9 +78,9 @@ namespace Test.WebApl.Controllers
         // POST: api/Values
         public async Task<HttpResponseMessage> SaveCustomerAsync([FromBody]CustomerRest customerToSave)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, "Greska");
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Bad User");
             }
             Customer newCustomer = new Customer(Guid.NewGuid(),customerToSave.CustomerFirstName, customerToSave.CustomerLastName, customerToSave.CustomerAge);
             if (await service.SaveCustomerAsync(newCustomer))

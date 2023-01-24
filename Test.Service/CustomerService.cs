@@ -13,10 +13,18 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace Test.Service
 {
+
     public class CustomerService : ICustomerService
     {
-        public CustomerRepository repository = new CustomerRepository(); 
+        //public CustomerRepository repository = new CustomerRepository(); 
 
+
+        private ICustomerRepository repository{ get; set; }
+
+        public CustomerService(ICustomerRepository _repository)
+        {
+            repository = _repository;
+        }
 
         public async Task<Customer> FindCustomerByIdAsync(Guid id)
         {
