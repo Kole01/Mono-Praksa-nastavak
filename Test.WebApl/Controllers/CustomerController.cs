@@ -106,7 +106,7 @@ namespace Test.WebApl.Controllers
                 CustomerAge = updateCustomer.CustomerAge
             };
 
-            switch (await service.ChangeAgeAsync(alterCustomer))
+            switch (await service.UpdateCustomerAsync(alterCustomer))
             {
                 case 1:
                     return Request.CreateResponse(HttpStatusCode.NotFound, "Customer not found");
