@@ -33,3 +33,5 @@ C:\Users\student\source\repos\Test\Test.Service\bin\Debug\System.Memory.xml
 C:\Users\student\source\repos\Test\Test.Service\bin\Debug\System.Numerics.Vectors.xml
 C:\Users\student\source\repos\Test\Test.Service\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\student\source\repos\Test\Test.Service\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\student\source\repos\Test\Test.Service\bin\Debug\Test.Common.dll
+C:\Users\student\source\repos\Test\Test.Service\bin\Debug\Test.Common.pdb

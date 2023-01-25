@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Test.Model;
 using Test.Repository.Common;
+using Test.Common;
+
 
 namespace Test.Repository
 {
@@ -48,12 +50,41 @@ namespace Test.Repository
 
         }
 
-        public async Task<List<Customer>> AllCustomersAsync()
+        public async Task<List<Customer>> AllCustomersAsync(Paging paging, Sorting sorting, Filtering filtering)
         {
             SqlConnection conn = new SqlConnection(connectionString);
             List<Customer> customers = new List<Customer>();
-            string queryString = "SELECT * FROM [Prak].[dbo].[Customer]";
-            SqlCommand cmd = new SqlCommand(queryString, conn);
+            StringBuilder queryString = new StringBuilder("SELECT * FROM [Prak].[dbo].[Customer]");
+
+            if (filtering.CustomerAgeMin!= null && filtering.CustomerAgeMax != null )
+            {
+                queryString.AppendLine("WHERE Age > " + filtering.CustomerAgeMin + " AND Age < " + filtering.CustomerAgeMax);
+            }
+
+            if (filtering.CustomerAgeMin == null && filtering.CustomerAgeMax != null)
+            {
+                queryString.AppendLine("WHERE Age < " + filtering.CustomerAgeMax);
+            }
+
+            if (filtering.CustomerAgeMin != null && filtering.CustomerAgeMax == null)
+            {
+                queryString.AppendLine("WHERE Age > " + filtering.CustomerAgeMin);
+            }
+
+            if (filtering.SearchCustomer!=null && (filtering.CustomerAgeMax!=null || filtering.CustomerAgeMin!=null ))
+            {
+                queryString.AppendLine(" AND LastName LIKE '%"+ filtering.SearchCustomer+ "%' OR FirstName LIKE '%"+ filtering.SearchCustomer+"%'");
+            }
+            if (filtering.SearchCustomer != null && (filtering.CustomerAgeMax == null && filtering.CustomerAgeMin == null))
+            {
+                queryString.AppendLine(" WHERE LastName LIKE '%"+filtering.SearchCustomer+ "%' OR FirstName LIKE '%"+ filtering.SearchCustomer+"%'");
+            }
+            queryString.AppendLine("ORDER BY "+ sorting.OrderBy + " " + sorting.OrderDirection);
+            queryString.AppendLine("OFFSET " + (paging.PageNumber - 1) * paging.Rpp + " ROWS");
+            queryString.AppendLine("FETCH NEXT "+ paging.Rpp + " ROWS ONLY");
+
+
+            SqlCommand cmd = new SqlCommand(queryString.ToString(), conn);
             await conn.OpenAsync();
             SqlDataReader reader = cmd.ExecuteReader();
             while (await reader.ReadAsync())
@@ -164,8 +195,8 @@ namespace Test.Repository
                 return 3;
             }catch (SqlException ex)
             {
-
-                return 4;
+                throw ex;
+                
             }
             
         }

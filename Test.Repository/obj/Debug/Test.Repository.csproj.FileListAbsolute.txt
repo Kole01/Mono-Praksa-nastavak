@@ -28,3 +28,5 @@ C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\System.Memory.xml
 C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\System.Numerics.Vectors.xml
 C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\Test.Common.dll
+C:\Users\student\source\repos\Test\Test.Repository\bin\Debug\Test.Common.pdb

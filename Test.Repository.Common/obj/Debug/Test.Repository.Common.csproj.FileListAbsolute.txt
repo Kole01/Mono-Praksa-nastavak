@@ -9,3 +9,5 @@ C:\Users\student\source\repos\Test\Test.Repository.Common\obj\Debug\Test.Reposit
 C:\Users\student\source\repos\Test\Test.Repository.Common\obj\Debug\Test.Repository.Common.csproj.CopyComplete
 C:\Users\student\source\repos\Test\Test.Repository.Common\obj\Debug\Test.Repository.Common.dll
 C:\Users\student\source\repos\Test\Test.Repository.Common\obj\Debug\Test.Repository.Common.pdb
+C:\Users\student\source\repos\Test\Test.Repository.Common\bin\Debug\Test.Common.dll
+C:\Users\student\source\repos\Test\Test.Repository.Common\bin\Debug\Test.Common.pdb

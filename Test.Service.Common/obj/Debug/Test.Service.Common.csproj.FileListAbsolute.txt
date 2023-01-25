@@ -9,3 +9,5 @@ C:\Users\student\source\repos\Test\Test.Service.Common\obj\Debug\Test.Service.Co
 C:\Users\student\source\repos\Test\Test.Service.Common\obj\Debug\Test.Service.Common.csproj.CopyComplete
 C:\Users\student\source\repos\Test\Test.Service.Common\obj\Debug\Test.Service.Common.dll
 C:\Users\student\source\repos\Test\Test.Service.Common\obj\Debug\Test.Service.Common.pdb
+C:\Users\student\source\repos\Test\Test.Service.Common\bin\Debug\Test.Common.dll
+C:\Users\student\source\repos\Test\Test.Service.Common\bin\Debug\Test.Common.pdb

@@ -33,7 +33,7 @@ namespace Test.WebApl.App_Start
             var config = GlobalConfiguration.Configuration;
             var builder = new ContainerBuilder();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            builder.RegisterModule(new CustomerServiceModule()) ;
+            builder.RegisterModule(new CustomerServiceModule());
             builder.RegisterModule(new CustomerRepositoryModule());
             var container = builder.Build();
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);

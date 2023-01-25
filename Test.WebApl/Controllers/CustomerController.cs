@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.WebSockets;
+using Test.Common;
 using Test.Model;
 using Test.Model.Common;
 using Test.Repository;
@@ -48,9 +49,14 @@ namespace Test.WebApl.Controllers
 
         [HttpGet]
         // GET: api/Values/5
-        public async Task<HttpResponseMessage> AllCustomersAsync()
+        public async Task<HttpResponseMessage> AllCustomersAsync(int Rpp=4, int PageNumber=1, string OrderBy="Age", string OrderDirection="Asc", string SearchCustomer=null, int? CustomerAgeMin=null, int? CustomerAgeMax = null)
         {
-            List<Customer> customers = await service.AllCustomersAsync();
+            
+            Paging paging = new Paging(Rpp, PageNumber);
+            Sorting sorting = new Sorting(OrderBy, OrderDirection);
+            Filtering filtering = new Filtering(SearchCustomer, CustomerAgeMin, CustomerAgeMax);
+
+            List<Customer> customers = await service.AllCustomersAsync(paging, sorting,filtering);
             List<CustomerRest> listRestCustomers = new List<CustomerRest>();
             foreach (Customer customer in customers)
             {

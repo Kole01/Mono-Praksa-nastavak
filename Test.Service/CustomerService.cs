@@ -10,6 +10,7 @@ using Test.Service.Common;
 using Test.Repository;
 using Test.Repository.Common;
 using System.Runtime.InteropServices.ComTypes;
+using Test.Common;
 
 namespace Test.Service
 {
@@ -36,9 +37,9 @@ namespace Test.Service
             return null;
         }
 
-        public async Task<List<Customer>> AllCustomersAsync()
+        public async Task<List<Customer>> AllCustomersAsync(Paging paging, Sorting sorting, Filtering filtering)
         {
-            List<Customer> customers =await repository.AllCustomersAsync();
+            List<Customer> customers =await repository.AllCustomersAsync(paging, sorting, filtering);
             if (customers != null)
             {
                 return customers;
